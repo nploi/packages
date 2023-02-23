@@ -1,3 +1,7 @@
+## 0.4.1
+
+* Add "My Location" Widget. Issue [#64073](https://github.com/flutter/flutter/issues/64073)
+
 ## 0.4.0+6
 
 * Updates links for the merge of flutter/plugins into flutter/packages.
