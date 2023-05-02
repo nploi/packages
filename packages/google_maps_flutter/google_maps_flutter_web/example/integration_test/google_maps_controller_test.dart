@@ -606,10 +606,6 @@ void main() {
           (_) async => throw Exception('permission denied'),
         );
 
-        when(mockGeolocation.watchPosition()).thenAnswer((_) {
-          throw Exception('permission denied');
-        });
-
         controller.init();
 
         await tester.pumpAndSettle();
