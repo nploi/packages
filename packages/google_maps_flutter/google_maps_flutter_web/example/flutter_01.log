@@ -1,0 +1,100 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter drive -d web-server --web-port=7357 --driver test_driver/integration_test.dart --target integration_test/google_maps_controller_test.dart
+
+## exception
+
+SessionNotCreatedException: SessionNotCreatedException (33): session not created: This version of ChromeDriver only supports Chrome version 103
+Current browser version is 112.0.5615.49 with binary path /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+  (Driver info: chromedriver=103.0.5060.53 (a1711811edd74ff1cf2150f36ffa3b0dae40b17f-refs/branch-heads/5060@{#853}),platform=Mac OS X 13.3.1 x86_64)
+
+```
+#0      parseJsonWireResponse (package:webdriver/src/handler/json_wire/utils.dart:80:9)
+#1      JsonWireSessionHandler.parseInfoResponse (package:webdriver/src/handler/json_wire/session.dart:27:21)
+#2      JsonWireSessionHandler.parseCreateResponse (package:webdriver/src/handler/json_wire/session.dart:18:7)
+#3      InferSessionHandler.parseCreateResponse (package:webdriver/src/handler/infer_handler.dart:100:39)
+#4      AsyncRequestClient.send (package:webdriver/src/common/request_client.dart:96:32)
+<asynchronous suspension>
+#5      createDriver (package:webdriver/async_core.dart:64:19)
+<asynchronous suspension>
+#6      WebDriverService.startTest (package:flutter_tools/src/drive/web_driver_service.dart:145:19)
+<asynchronous suspension>
+#7      DriveCommand.runCommand (package:flutter_tools/src/commands/drive.dart:309:30)
+<asynchronous suspension>
+#8      FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:1257:27)
+<asynchronous suspension>
+#9      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#10     CommandRunner.runCommand (package:args/command_runner.dart:209:13)
+<asynchronous suspension>
+#11     FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:283:9)
+<asynchronous suspension>
+#12     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#13     FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:229:5)
+<asynchronous suspension>
+#14     run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:64:9)
+<asynchronous suspension>
+#15     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:19)
+<asynchronous suspension>
+#16     main (package:flutter_tools/executable.dart:91:3)
+<asynchronous suspension>
+```
+
+## flutter doctor
+
+```
+[33m[!][39m Flutter (Channel unknown, 3.7.0, on macOS 13.3.1 22E261 darwin-x64, locale en-VN)
+    [33m![39m Flutter version 3.7.0 on channel unknown at /Users/loinguyen/work/flutter
+      Currently on an unknown channel. Run `flutter channel` to switch to an official channel.
+      If that doesn't fix the issue, reinstall Flutter by following instructions at https://flutter.dev/docs/get-started/install.
+    [33m![39m Warning: `dart` on your path resolves to /usr/local/Cellar/dart/2.18.6/libexec/bin/dart, which is not inside your current Flutter SDK checkout at
+      /Users/loinguyen/work/flutter. Consider adding /Users/loinguyen/work/flutter/bin to the front of your path.
+    [33m![39m Unknown upstream repository.
+      Reinstall Flutter by following instructions at https://flutter.dev/docs/get-started/install.
+    [32m•[39m Framework revision b06b8b2710 (3 months ago), 2023-01-23 16:55:55 -0800
+    [32m•[39m Engine revision b24591ed32
+    [32m•[39m Dart version 2.19.0
+    [32m•[39m DevTools version 2.20.1
+    [32m•[39m If those were intentional, you can disregard the above warnings; however it is recommended to use "git" directly to perform update checks and upgrades.
+
+[32m[✓][39m Android toolchain - develop for Android devices (Android SDK version 32.1.0-rc1)
+    [32m•[39m Android SDK at /Users/loinguyen/Library/Android/sdk
+    [32m•[39m Platform android-33, build-tools 32.1.0-rc1
+    [32m•[39m Java binary at: /Applications/Android Studio.app/Contents/jre/Contents/Home/bin/java
+    [32m•[39m Java version OpenJDK Runtime Environment (build 11.0.12+0-b1504.28-7817840)
+    [32m•[39m All Android licenses accepted.
+
+[32m[✓][39m Xcode - develop for iOS and macOS (Xcode 14.3)
+    [32m•[39m Xcode at /Applications/Xcode.app/Contents/Developer
+    [32m•[39m Build 14E222b
+    [32m•[39m CocoaPods version 1.12.0
+
+[32m[✓][39m Chrome - develop for the web
+    [32m•[39m Chrome at /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+
+[32m[✓][39m Android Studio (version 2021.2)
+    [32m•[39m Android Studio at /Applications/Android Studio.app/Contents
+    [32m•[39m Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    [32m•[39m Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    [32m•[39m Java version OpenJDK Runtime Environment (build 11.0.12+0-b1504.28-7817840)
+
+[32m[✓][39m VS Code (version 1.77.1)
+    [32m•[39m VS Code at /Applications/Visual Studio Code.app/Contents
+    [32m•[39m Flutter extension version 3.62.0
+
+[32m[✓][39m Connected device (3 available)
+    [32m•[39m macOS (desktop)  • macos      • darwin-x64     • macOS 13.3.1 22E261 darwin-x64
+    [32m•[39m Web Server (web) • web-server • web-javascript • Flutter Tools
+    [32m•[39m Chrome (web)     • chrome     • web-javascript • Google Chrome 112.0.5615.49
+
+[32m[✓][39m HTTP Host Availability
+    [32m•[39m All required HTTP hosts are available
+
+[33m![39m Doctor found issues in 1 category.
+```

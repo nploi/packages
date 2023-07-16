@@ -198,7 +198,7 @@ class GoogleMapController {
       if (mapConfiguration.myLocationButtonEnabled ?? false) {
         _addMyLocationButton(map, this);
       }
-      _displayAndWatchMyLocation(_markersController!);
+      _displayAndWatchMyLocation(this);
       _centerMyCurrentLocation(this);
     }
   }

@@ -10,27 +10,34 @@ Geolocation _geolocation = window.navigator.geolocation;
 LatLng _lastKnownLocation = _nullLatLng;
 
 // Watch current location and update blue dot
-Future<void> _displayAndWatchMyLocation(MarkersController controller) async {
+Future<void> _displayAndWatchMyLocation(GoogleMapController controller) async {
   final Marker marker = await _createBlueDotMarker();
-  _geolocation.watchPosition().listen((Geoposition location) async {
-    _lastKnownLocation = LatLng(
-      location.coords!.latitude!.toDouble(),
-      location.coords!.longitude!.toDouble(),
-    );
-    // TODO(nploi): https://github.com/flutter/plugins/pull/6868#discussion_r1057898052
-    // We're discarding a lot of information from coords, like its accuracy, heading and speed. Those can be used to:
-    // - Render a bigger "blue halo" around the current position marker when the accuracy is low.
-    // - Render the direction in which we're looking at with a small "cone" using the heading information.
-    // - Render the current position marker as an arrow when the current position is "moving" (speed > certain threshold), and the direction in which the arrow should point (again, with the heading information).
+  _geolocation.watchPosition().listen(
+    (Geoposition location) async {
+      _lastKnownLocation = LatLng(
+        location.coords?.latitude?.toDouble() ?? _nullLatLng.latitude,
+        location.coords?.longitude?.toDouble() ?? _nullLatLng.longitude,
+      );
+      // TODO(nploi): https://github.com/flutter/plugins/pull/6868#discussion_r1057898052
+      // We're discarding a lot of information from coords, like its accuracy, heading and speed. Those can be used to:
+      // - Render a bigger "blue halo" around the current position marker when the accuracy is low.
+      // - Render the direction in which we're looking at with a small "cone" using the heading information.
+      // - Render the current position marker as an arrow when the current position is "moving" (speed > certain threshold), and the direction in which the arrow should point (again, with the heading information).
 
-    final Marker markerUpdate =
-        marker.copyWith(positionParam: _lastKnownLocation);
-    if (controller.markers.containsKey(marker.markerId)) {
-      controller._changeMarker(markerUpdate);
-    } else {
-      controller.addMarkers(<Marker>{markerUpdate});
-    }
-  });
+      final Marker markerUpdate =
+          marker.copyWith(positionParam: _lastKnownLocation);
+
+      if (controller._markersController?.markers.containsKey(marker.markerId) ??
+          false) {
+        controller._markersController?._changeMarker(markerUpdate);
+      } else {
+        controller._markersController?.addMarkers(<Marker>{markerUpdate});
+      }
+    },
+    onError: (_) {
+      controller._myLocationButton?.doneAnimation();
+    },
+  );
 }
 
 // Get current location
@@ -52,8 +59,6 @@ Future<LatLng> _getCurrentLocation() async {
 Future<void> _centerMyCurrentLocation(
   GoogleMapController controller,
 ) async {
-  controller._myLocationButton?.startAnimation();
-
   try {
     final LatLng location = await _getCurrentLocation();
 
@@ -95,7 +100,6 @@ Future<Marker> _createBlueDotMarker() async {
     markerId: const MarkerId('my_location_blue_dot'),
     icon: icon,
     zIndex: 0.5,
-    onTap: () {},
   );
 }
 
@@ -197,6 +201,7 @@ class MyLocationButton {
     _btnChild.disabled = true;
     _imageChild.classes.remove('waiting');
     _imageChild.style.backgroundPosition = '-24px 0px';
+    print('disable button');
   }
 
   /// Check button disabled or enabled

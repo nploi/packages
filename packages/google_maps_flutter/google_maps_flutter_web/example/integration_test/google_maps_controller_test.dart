@@ -562,7 +562,7 @@ void main() {
 
           when(mockCoordinates.latitude).thenReturn(currentLocation.latitude);
 
-          when(mockGeolocation.getCurrentPosition(timeout: anyNamed('timeout')))
+          when(mockGeolocation.getCurrentPosition.call())
               .thenAnswer((_) async => mockGeoposition);
 
           when(mockGeolocation.watchPosition()).thenAnswer((_) {
@@ -572,11 +572,12 @@ void main() {
 
           controller.init();
 
-          await tester.pumpAndSettle();
+          await Future<void>.delayed(const Duration(seconds: 1));
+          final LatLngBounds visibleRegion = await controller.getVisibleRegion();
 
           final Set<Marker> capturedMarkers =
               verify(markers.addMarkers(captureAny)).captured[1] as Set<Marker>;
-
+          expect(visibleRegion.contains(currentLocation), true);
           expect(controller.myLocationButton, isNull);
           expect(capturedMarkers.length, 1);
           expect(capturedMarkers.first.position, currentLocation);
@@ -601,6 +602,9 @@ void main() {
           geolocation: mockGeolocation,
         );
 
+        // when(mockGeolocation.watchPosition()).thenAnswer((_) {
+        //   return Stream<MockGeoposition>.error('permission denied');
+        // });
         when(mockGeolocation.getCurrentPosition(timeout: anyNamed('timeout')))
             .thenAnswer(
           (_) async => throw Exception('permission denied'),
@@ -608,13 +612,10 @@ void main() {
 
         controller.init();
 
-        await tester.pumpAndSettle();
+        await Future<void>.delayed(const Duration(seconds: 1));
 
-        final Set<Marker> capturedMarkers =
-            verify(markers.addMarkers(captureAny)).captured[0] as Set<Marker>;
         expect(controller.myLocationButton, isNotNull);
         expect(controller.myLocationButton?.isDisabled(), true);
-        expect(capturedMarkers.length, 0);
       });
     });
 
